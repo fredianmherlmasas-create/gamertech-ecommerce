@@ -207,36 +207,76 @@ export default function MainLayout() {
 
       {/* Footer */}
       <footer className="bg-dark-900 border-t border-dark-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="text-lg font-bold text-white mb-4">GamerTech</h3>
-              <p className="text-gray-400 text-sm">
-                Premium gaming laptops for enthusiasts and professionals. Quality products, competitive prices.
+        {/* Newsletter Section */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-dark-800">
+          <div className="bg-gradient-to-r from-gamertech-500/10 to-transparent p-8 lg:p-12 rounded-3xl border border-gamertech-500/20 flex flex-col lg:flex-row items-center justify-between gap-8">
+            <div className="max-w-md">
+              <h3 className="text-2xl font-bold text-white mb-2">Join the Elite Community</h3>
+              <p className="text-gray-400">Get exclusive offers, early access to new drops, and professional gaming tips delivered to your inbox.</p>
+            </div>
+            <form
+              onSubmit={(e) => { e.preventDefault(); (e.target as HTMLFormElement).reset(); }}
+              className="w-full lg:w-auto flex flex-col sm:flex-row gap-4"
+            >
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="px-6 py-4 bg-dark-950 border border-dark-700 rounded-xl text-white focus:outline-none focus:border-gamertech-500 min-w-[300px]"
+                required
+              />
+              <button className="px-8 py-4 bg-gamertech-500 text-dark-950 font-bold rounded-xl hover:bg-gamertech-400 transition-colors shadow-lg shadow-gamertech-500/20">
+                Subscribe Now
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div className="space-y-6">
+              <Link to="/" className="flex items-center space-x-2">
+                <span className="text-2xl font-bold text-gamertech-500">Gamer</span>
+                <span className="text-2xl font-bold text-white">Tech</span>
+              </Link>
+              <p className="text-gray-500 text-sm leading-relaxed">
+                Premium gaming laptops for enthusiasts and professionals. We curate only the most powerful machines on the planet.
               </p>
             </div>
             <div>
-              <h4 className="text-white font-semibold mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-sm">
-                <li><Link to="/" className="text-gray-400 hover:text-gamertech-500">Home</Link></li>
-                <li><Link to="/products" className="text-gray-400 hover:text-gamertech-500">Products</Link></li>
-                <li><Link to="/cart" className="text-gray-400 hover:text-gamertech-500">Cart</Link></li>
+              <h4 className="text-white font-bold mb-6 uppercase tracking-widest text-xs">Shop Gear</h4>
+              <ul className="space-y-4 text-sm">
+                <li><Link to="/products" className="text-gray-500 hover:text-gamertech-500 transition-colors">All Laptops</Link></li>
+                <li><Link to="/products?category=ultra-thin" className="text-gray-500 hover:text-gamertech-500 transition-colors">Ultra-Thin</Link></li>
+                <li><Link to="/products?category=desktop-replacement" className="text-gray-500 hover:text-gamertech-500 transition-colors">Pro Gaming</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="text-white font-semibold mb-4">Customer Service</h4>
-              <ul className="space-y-2 text-sm">
-                <li><Link to="/orders" className="text-gray-400 hover:text-gamertech-500">My Orders</Link></li>
-                <li><Link to="/profile" className="text-gray-400 hover:text-gamertech-500">Profile</Link></li>
+              <h4 className="text-white font-bold mb-6 uppercase tracking-widest text-xs">Company</h4>
+              <ul className="space-y-4 text-sm">
+                <li><Link to="/contact" className="text-gray-500 hover:text-gamertech-500 transition-colors">Contact Us</Link></li>
+                <li><span className="text-gray-500 hover:text-gamertech-500 transition-colors cursor-pointer">About Us</span></li>
+                <li><span className="text-gray-500 hover:text-gamertech-500 transition-colors cursor-pointer">Careers</span></li>
               </ul>
             </div>
             <div>
-              <h4 className="text-white font-semibold mb-4">Contact</h4>
-              <p className="text-gray-400 text-sm">support@gamertech.com</p>
+              <h4 className="text-white font-bold mb-6 uppercase tracking-widest text-xs">Customer Care</h4>
+              <ul className="space-y-4 text-sm">
+                <li><Link to="/orders" className="text-gray-500 hover:text-gamertech-500 transition-colors">Track Order</Link></li>
+                <li><span className="text-gray-500 hover:text-gamertech-500 transition-colors cursor-pointer">Shipping Policy</span></li>
+                <li><span className="text-gray-500 hover:text-gamertech-500 transition-colors cursor-pointer">Privacy Policy</span></li>
+              </ul>
             </div>
           </div>
-          <div className="mt-8 pt-8 border-t border-dark-800 text-center text-gray-500 text-sm">
-            © {new Date().getFullYear()} GamerTech. All rights reserved.
+          <div className="mt-12 pt-12 border-t border-dark-800 flex flex-col md:flex-row justify-between items-center gap-6">
+            <p className="text-gray-600 text-xs font-medium">
+              © {new Date().getFullYear()} GamerTech. All rights reserved. Built for Elite Gamers.
+            </p>
+            <div className="flex items-center gap-6">
+               {/* Social Icons Placeholder */}
+               <span className="text-gray-600 hover:text-gamertech-500 transition-colors cursor-pointer text-sm font-bold uppercase tracking-widest">Twitter</span>
+               <span className="text-gray-600 hover:text-gamertech-500 transition-colors cursor-pointer text-sm font-bold uppercase tracking-widest">Discord</span>
+               <span className="text-gray-600 hover:text-gamertech-500 transition-colors cursor-pointer text-sm font-bold uppercase tracking-widest">Instagram</span>
+            </div>
           </div>
         </div>
       </footer>
