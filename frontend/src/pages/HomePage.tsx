@@ -1,192 +1,131 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRightIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
+import { ArrowRightIcon, ShoppingBagIcon, StarIcon } from '@heroicons/react/24/outline';
 import { motion } from 'framer-motion';
 import { productService } from '../services/product.service';
 import type { Product } from '../types';
 import { cn } from '../utils/cn';
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
+const brands = ['Razer', 'ASUS ROG', 'Alienware', 'MSI', 'Lenovo Legion', 'HP Omen', 'Acer Predator'];
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5 },
+const testimonials = [
+  {
+    name: 'Sarah Jenkins',
+    role: 'Pro Streamer',
+    content: 'The Razer Blade I bought from GamerTech is a beast. Fast shipping and the customer support was incredible!',
+    rating: 5
   },
-};
+  {
+    name: 'Marcus Thorne',
+    role: 'Software Engineer',
+    content: 'Finally found a place that understands high-end specs. The specs filtering made it easy to find exactly what I needed.',
+    rating: 5
+  },
+  {
+    name: 'Elena Rodriguez',
+    role: 'Graphic Designer',
+    content: 'Great prices and even better machines. The G14 I got is perfect for both my creative work and gaming nights.',
+    rating: 4
+  }
+];
+
+// ... existing variants
 
 export default function HomePage() {
-  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    loadFeaturedProducts();
-  }, []);
-
-  const loadFeaturedProducts = async () => {
-    try {
-      setIsLoading(true);
-      const products = await productService.getFeaturedProducts(6);
-      setFeaturedProducts(products);
-    } catch (error) {
-      console.error('Failed to load featured products:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+// ... existing state and logic ...
 
   return (
-    <div>
+    <div className="space-y-24 pb-20">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-dark-900 via-dark-950 to-dark-900 py-20 lg:py-32">
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-1/2 -right-1/2 w-full h-full bg-gamertech-500/5 rounded-full blur-3xl" />
-          <div className="absolute -bottom-1/2 -left-1/2 w-full h-full bg-gamertech-500/5 rounded-full blur-3xl" />
-        </div>
+      {/* ... */}
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Brand Marquee */}
+      <section className="bg-dark-900/50 py-10 border-y border-dark-800 overflow-hidden">
+        <div className="flex whitespace-nowrap">
           <motion.div
-            className="text-center max-w-3xl mx-auto"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
+            animate={{ x: [0, -1000] }}
+            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+            className="flex items-center gap-20 px-10"
           >
-            <motion.h1
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              Level Up Your{' '}
-              <span className="text-gamertech-500">Gaming Experience</span>
-            </motion.h1>
-            <motion.p
-              className="text-lg md:text-xl text-gray-400 mb-8"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-            >
-              Discover premium gaming laptops from the world's leading brands.
-              Power, performance, and portability in one package.
-            </motion.p>
-            <motion.div
-              className="flex flex-col sm:flex-row items-center justify-center gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-            >
-              <Link
-                to="/products"
-                className="flex items-center space-x-2 px-8 py-4 bg-gamertech-500 text-dark-950 font-semibold rounded-lg hover:bg-gamertech-400 transition-colors"
-              >
-                <ShoppingBagIcon className="w-5 h-5" />
-                <span>Shop Now</span>
-              </Link>
-              <Link
-                to="/products"
-                className="flex items-center space-x-2 px-8 py-4 border border-gamertech-500 text-gamertech-500 font-semibold rounded-lg hover:bg-gamertech-500/10 transition-colors"
-              >
-                <span>View All Products</span>
-                <ArrowRightIcon className="w-5 h-5" />
-              </Link>
-            </motion.div>
+            {[...brands, ...brands, ...brands].map((brand, i) => (
+              <span key={i} className="text-2xl font-black text-dark-800 uppercase tracking-tighter hover:text-gamertech-500 transition-colors cursor-default">
+                {brand}
+              </span>
+            ))}
           </motion.div>
         </div>
       </section>
 
       {/* Featured Products Section */}
-      <section className="py-16 lg:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            className="flex items-center justify-between mb-12"
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            <h2 className="text-2xl md:text-3xl font-bold text-white">
-              Featured Products
-            </h2>
-            <Link
-              to="/products"
-              className="text-gamertech-500 hover:text-gamertech-400 flex items-center space-x-1"
-            >
-              <span>View All</span>
-              <ArrowRightIcon className="w-4 h-4" />
-            </Link>
-          </motion.div>
+      {/* ... existing code ... */}
 
-          {isLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[...Array(6)].map((_, i) => (
-                <div
-                  key={i}
-                  className="bg-dark-800 rounded-lg h-80 animate-pulse"
-                />
-              ))}
-            </div>
-          ) : (
+      {/* Features Section */}
+      {/* ... existing code ... */}
+
+      {/* Testimonials Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Elite Feedback</h2>
+          <p className="text-gray-400">Join thousands of satisfied gamers who upgraded their setup with us.</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {testimonials.map((t, i) => (
             <motion.div
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="bg-dark-900 border border-dark-800 p-8 rounded-3xl relative"
             >
-              {featuredProducts.map((product) => (
-                <motion.div key={product.id} variants={itemVariants}>
-                  <ProductCard product={product} />
-                </motion.div>
-              ))}
+              <div className="flex text-gamertech-500 mb-4">
+                {[...Array(5)].map((_, star) => (
+                  <StarIcon key={star} className={cn("w-4 h-4", star < t.rating ? "fill-current" : "opacity-30")} />
+                ))}
+              </div>
+              <p className="text-gray-300 leading-relaxed mb-6 italic">"{t.content}"</p>
+              <div>
+                <p className="text-white font-bold">{t.name}</p>
+                <p className="text-gamertech-500 text-xs font-medium uppercase tracking-widest">{t.role}</p>
+              </div>
+              <div className="absolute top-8 right-8 text-dark-800 text-6xl font-serif select-none">"</div>
             </motion.div>
-          )}
+          ))}
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-16 bg-dark-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Final CTA */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-gradient-to-br from-gamertech-500 to-gamertech-600 rounded-[3rem] p-12 lg:p-20 text-center relative overflow-hidden group">
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20" />
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="relative z-10"
           >
-            <motion.div variants={itemVariants}>
-              <FeatureCard
-                title="Premium Quality"
-                description="All products are carefully selected from top-tier manufacturers with quality assurance."
-              />
-            </motion.div>
-            <motion.div variants={itemVariants}>
-              <FeatureCard
-                title="Fast Shipping"
-                description="Express delivery to your doorstep with real-time tracking and secure packaging."
-              />
-            </motion.div>
-            <motion.div variants={itemVariants}>
-              <FeatureCard
-                title="Expert Support"
-                description="Our team of gaming experts is here to help you find the perfect laptop."
-              />
-            </motion.div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-dark-950 mb-6 uppercase tracking-tighter">
+              Ready to Level Up?
+            </h2>
+            <p className="text-dark-950/80 text-xl font-medium mb-10 max-w-2xl mx-auto">
+              Join the elite. Get the performance you deserve with our hand-picked gaming machines.
+            </p>
+            <Link
+              to="/products"
+              className="inline-flex items-center space-x-3 px-10 py-5 bg-dark-950 text-white font-black rounded-2xl hover:bg-black transition-all shadow-2xl group"
+            >
+              <span>Explore the Collection</span>
+              <ArrowRightIcon className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
+            </Link>
           </motion.div>
         </div>
       </section>
     </div>
   );
 }
+
+// ... rest of component
 
 function ProductCard({ product }: { product: Product }) {
   return (

@@ -1,7 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FunnelIcon, Squares2X2Icon, ListBulletIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
+import { Dialog, Transition } from '@headlessui/react';
+import {
+  FunnelIcon,
+  Squares2X2Icon,
+  ListBulletIcon,
+  ShoppingBagIcon,
+  XMarkIcon,
+  CpuChipIcon,
+  ComputerDesktopIcon
+} from '@heroicons/react/24/outline';
 import { productService } from '../services/product.service';
 import { useCartStore } from '../hooks/useStore';
 import type { Product } from '../types';
@@ -9,24 +18,7 @@ import { cn } from '../utils/cn';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.05,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.4 },
-  },
-};
+// ... variants
 
 export default function ProductsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -34,149 +26,129 @@ export default function ProductsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [brands, setBrands] = useState<string[]>([]);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  const category = searchParams.get('category') || '';
-  const brand = searchParams.get('brand') || '';
-  const search = searchParams.get('search') || '';
-
-  useEffect(() => {
-    loadData();
-  }, [category, brand, search]);
-
-  const loadData = async () => {
-    try {
-      setIsLoading(true);
-      const [productsRes, brandsRes] = await Promise.all([
-        productService.getProducts({ category, brand, search, limit: 20 }),
-        productService.getBrands(),
-      ]);
-      setProducts(productsRes.data);
-      setBrands(brandsRes);
-    } catch (error) {
-      console.error('Failed to load products:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const updateFilters = (key: string, value: string) => {
-    const newParams = new URLSearchParams(searchParams);
-    if (value) {
-      newParams.set(key, value);
-    } else {
-      newParams.delete(key);
-    }
-    setSearchParams(newParams);
-  };
+  // ... loadData and filters
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
-        <div>
-          <h1 className="text-3xl font-bold text-white">
-            {category ? `${category.charAt(0).toUpperCase() + category.slice(1)} Laptops` : 'All Laptops'}
-          </h1>
-          <p className="text-gray-400 mt-2">{products.length} products found</p>
-        </div>
+      {/* ... page header and sidebar ... */}
 
-        <div className="flex items-center gap-4">
-          <div className="flex items-center bg-dark-800 rounded-lg p-1 border border-dark-700">
-            <button
-              onClick={() => setViewMode('grid')}
-              className={cn(
-                'p-2 rounded-md transition-colors',
-                viewMode === 'grid' ? 'bg-gamertech-500 text-dark-950' : 'text-gray-400 hover:text-white'
-              )}
-            >
-              <Squares2X2Icon className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => setViewMode('list')}
-              className={cn(
-                'p-2 rounded-md transition-colors',
-                viewMode === 'list' ? 'bg-gamertech-500 text-dark-950' : 'text-gray-400 hover:text-white'
-              )}
-            >
-              <ListBulletIcon className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex flex-col lg:flex-row gap-8">
-        {/* Sidebar Filters */}
-        <aside className="w-full lg:w-64 space-y-8">
-          <div>
-            <h3 className="text-white font-semibold flex items-center gap-2 mb-4">
-              <FunnelIcon className="w-4 h-4 text-gamertech-500" />
-              Brands
-            </h3>
-            <div className="space-y-2">
-              <button
-                onClick={() => updateFilters('brand', '')}
-                className={cn(
-                  'block w-full text-left px-3 py-2 rounded-md transition-colors',
-                  !brand ? 'bg-gamertech-500/10 text-gamertech-500' : 'text-gray-400 hover:text-white hover:bg-dark-800'
-                )}
-              >
-                All Brands
-              </button>
-              {brands.map((b) => (
-                <button
-                  key={b}
-                  onClick={() => updateFilters('brand', b)}
-                  className={cn(
-                    'block w-full text-left px-3 py-2 rounded-md transition-colors',
-                    brand === b ? 'bg-gamertech-500/10 text-gamertech-500' : 'text-gray-400 hover:text-white hover:bg-dark-800'
-                  )}
-                >
-                  {b}
-                </button>
-              ))}
-            </div>
-          </div>
-        </aside>
-
-        {/* Product Grid */}
-        <div className="flex-1">
-          {isLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="bg-dark-800 rounded-lg h-80 animate-pulse" />
-              ))}
-            </div>
-          ) : products.length > 0 ? (
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              className={cn(
-                'grid gap-6',
-                viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'
-              )}
-            >
-              {products.map((product) => (
-                <motion.div key={product.id} variants={itemVariants}>
-                  <ProductCard product={product} viewMode={viewMode} />
-                </motion.div>
-              ))}
+      {/* Product Grid */}
+      <div className="flex-1">
+          {/* ... existing products map ... */}
+          {/* Change ProductCard call to pass onQuickView */}
+          {products.map((product) => (
+            <motion.div key={product.id} variants={itemVariants}>
+              <ProductCard
+                product={product}
+                viewMode={viewMode}
+                onQuickView={() => setSelectedProduct(product)}
+              />
             </motion.div>
-          ) : (
-            <div className="text-center py-20 bg-dark-900 rounded-2xl border border-dark-800">
-              <p className="text-gray-400">No products found matching your criteria.</p>
-              <button
-                onClick={() => setSearchParams({})}
-                className="mt-4 text-gamertech-500 hover:underline"
-              >
-                Clear all filters
-              </button>
-            </div>
-          )}
-        </div>
+          ))}
       </div>
+
+      {/* Quick View Modal */}
+      <QuickViewModal
+        product={selectedProduct}
+        isOpen={!!selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+      />
     </div>
   );
 }
+
+function QuickViewModal({ product, isOpen, onClose }: { product: Product | null; isOpen: boolean; onClose: () => void }) {
+  const addItem = useCartStore((state) => state.addItem);
+
+  if (!product) return null;
+
+  return (
+    <Transition.Root show={isOpen} as={Fragment}>
+      <Dialog as="div" className="relative z-[100]" onClose={onClose}>
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-dark-950/80 backdrop-blur-sm transition-opacity" />
+        </Transition.Child>
+
+        <div className="fixed inset-0 z-10 overflow-y-auto">
+          <div className="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              enterTo="opacity-100 translate-y-0 sm:scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            >
+              <Dialog.Panel className="relative transform overflow-hidden rounded-[2rem] bg-dark-900 border border-dark-800 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-4xl">
+                <button
+                  type="button"
+                  className="absolute right-6 top-6 text-gray-400 hover:text-white z-10"
+                  onClick={onClose}
+                >
+                  <XMarkIcon className="h-8 w-8" />
+                </button>
+
+                <div className="flex flex-col md:flex-row">
+                  <div className="md:w-1/2 aspect-square md:aspect-auto">
+                    <img src={product.images[0]} alt="" className="h-full w-full object-cover" />
+                  </div>
+                  <div className="md:w-1/2 p-8 lg:p-12 flex flex-col">
+                    <p className="text-gamertech-500 font-bold uppercase tracking-widest text-xs mb-2">{product.brand}</p>
+                    <Dialog.Title as="h3" className="text-3xl font-black text-white mb-4 uppercase tracking-tighter">
+                      {product.name}
+                    </Dialog.Title>
+                    <p className="text-2xl font-bold text-white mb-6">${product.price.toFixed(2)}</p>
+                    <p className="text-gray-400 text-sm leading-relaxed mb-8 flex-1">{product.description}</p>
+
+                    <div className="grid grid-cols-2 gap-4 mb-8">
+                       <div className="flex items-center gap-3 p-3 bg-dark-800 rounded-xl">
+                          <CpuChipIcon className="w-5 h-5 text-gamertech-500" />
+                          <span className="text-[10px] text-gray-300 uppercase font-bold">{product.specs.cpu}</span>
+                       </div>
+                       <div className="flex items-center gap-3 p-3 bg-dark-800 rounded-xl">
+                          <ComputerDesktopIcon className="w-5 h-5 text-gamertech-500" />
+                          <span className="text-[10px] text-gray-300 uppercase font-bold">{product.specs.gpu}</span>
+                       </div>
+                    </div>
+
+                    <div className="flex gap-4">
+                      <button
+                        onClick={() => { addItem(product, 1); toast.success('Added to cart!'); onClose(); }}
+                        className="flex-1 py-4 bg-gamertech-500 text-dark-950 font-bold rounded-xl hover:bg-gamertech-400 transition-colors flex items-center justify-center gap-2"
+                      >
+                        <ShoppingBagIcon className="w-5 h-5" />
+                        Add to Cart
+                      </button>
+                      <Link
+                        to={`/products/${product.slug}`}
+                        className="px-6 py-4 border border-dark-700 text-white font-bold rounded-xl hover:bg-dark-800 transition-colors"
+                      >
+                        View Full
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </div>
+      </Dialog>
+    </Transition.Root>
+  );
+}
+
+// Update ProductCard to accept onQuickView prop ...
 
 function ProductCard({ product, viewMode }: { product: Product; viewMode: 'grid' | 'list' }) {
   if (viewMode === 'list') {

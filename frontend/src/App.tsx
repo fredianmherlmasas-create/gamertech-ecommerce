@@ -20,6 +20,7 @@ import OrdersPage from './pages/OrdersPage';
 import OrderDetailPage from './pages/OrderDetailPage';
 import ProfilePage from './pages/ProfilePage';
 import ContactPage from './pages/ContactPage';
+import ComparePage from './pages/ComparePage';
 import NotFoundPage from './pages/NotFoundPage';
 
 // Admin Pages
@@ -63,6 +64,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/compare" element={<ComparePage />} />
         
         {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>

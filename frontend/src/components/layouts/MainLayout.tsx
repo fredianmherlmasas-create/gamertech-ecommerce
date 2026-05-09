@@ -67,14 +67,17 @@ export default function MainLayout() {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8 mr-8">
-              <Link to="/" className="text-sm font-bold text-gray-400 hover:text-gamertech-500 transition-colors uppercase tracking-widest">
+              <Link to="/" className="text-sm font-bold text-gray-400 hover:text-gamertech-500 transition-colors uppercase tracking-widest text-[10px]">
                 Home
               </Link>
-              <Link to="/products" className="text-sm font-bold text-gray-400 hover:text-gamertech-500 transition-colors uppercase tracking-widest">
+              <Link to="/products" className="text-sm font-bold text-gray-400 hover:text-gamertech-500 transition-colors uppercase tracking-widest text-[10px]">
                 Products
               </Link>
+              <Link to="/compare" className="text-sm font-bold text-gray-400 hover:text-gamertech-500 transition-colors uppercase tracking-widest text-[10px]">
+                Compare
+              </Link>
               {isAdmin && (
-                <Link to="/admin" className="text-sm font-bold text-gamertech-500 hover:text-gamertech-400 transition-colors uppercase tracking-widest">
+                <Link to="/admin" className="text-sm font-bold text-gamertech-500 hover:text-gamertech-400 transition-colors uppercase tracking-widest text-[10px]">
                   Admin
                 </Link>
               )}
@@ -187,6 +190,9 @@ export default function MainLayout() {
                   </Link>
                   <Link to="/products" className="block px-4 py-3 text-lg font-bold text-white hover:bg-dark-800 rounded-xl">
                     Products
+                  </Link>
+                  <Link to="/compare" className="block px-4 py-3 text-lg font-bold text-white hover:bg-dark-800 rounded-xl">
+                    Compare
                   </Link>
                   {isAdmin && (
                     <Link to="/admin" className="block px-4 py-3 text-lg font-bold text-gamertech-500 hover:bg-dark-800 rounded-xl">
