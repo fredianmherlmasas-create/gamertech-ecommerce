@@ -11,9 +11,21 @@ export default function MainLayout() {
   const location = useLocation();
   const { user, isAuthenticated, isAdmin, logout } = useAuthStore();
   const { itemCount, wishlist } = useCartStore();
-  const { isMobileMenuOpen, setIsMobileMenuOpen } = useUIStore();
+  const { isMobileMenuOpen, setIsMobileMenuOpen, accentColor, setAccentColor } = useUIStore();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+
+  const colors = [
+    { name: 'Green', value: '0, 255, 136' },
+    { name: 'Blue', value: '0, 163, 255' },
+    { name: 'Purple', value: '188, 0, 255' },
+    { name: 'Red', value: '255, 0, 85' },
+  ];
+
+  // Apply accent color to root
+  useEffect(() => {
+    document.documentElement.style.setProperty('--color-primary', accentColor);
+  }, [accentColor]);
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -50,6 +62,22 @@ export default function MainLayout() {
               <span className="text-2xl font-bold text-gamertech-500">Gamer</span>
               <span className="text-2xl font-bold text-white">Tech</span>
             </Link>
+
+            {/* Theme Picker (Desktop) */}
+            <div className="hidden xl:flex items-center gap-2 px-4 border-l border-dark-800 ml-4">
+               {colors.map((c) => (
+                 <button
+                   key={c.name}
+                   onClick={() => setAccentColor(c.value)}
+                   className={cn(
+                     "w-4 h-4 rounded-full transition-all border-2",
+                     accentColor === c.value ? "border-white scale-125 shadow-lg" : "border-transparent opacity-50 hover:opacity-100"
+                   )}
+                   style={{ backgroundColor: `rgb(${c.value})` }}
+                   title={c.name}
+                 />
+               ))}
+            </div>
 
             {/* Search Bar (Desktop) */}
             <div className="hidden lg:block flex-1 max-w-md mx-8">

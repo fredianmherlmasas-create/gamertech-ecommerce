@@ -105,13 +105,24 @@ export const useCartStore = create<CartState>()(
 interface UIState {
   isCartOpen: boolean;
   isMobileMenuOpen: boolean;
+  accentColor: string;
   setIsCartOpen: (isOpen: boolean) => void;
   setIsMobileMenuOpen: (isOpen: boolean) => void;
+  setAccentColor: (color: string) => void;
 }
 
-export const useUIStore = create<UIState>()((set) => ({
-  isCartOpen: false,
-  isMobileMenuOpen: false,
-  setIsCartOpen: (isOpen) => set({ isCartOpen: isOpen }),
-  setIsMobileMenuOpen: (isOpen) => set({ isMobileMenuOpen: isOpen }),
-}));
+export const useUIStore = create<UIState>()(
+  persist(
+    (set) => ({
+      isCartOpen: false,
+      isMobileMenuOpen: false,
+      accentColor: '0, 255, 136', // Default Green
+      setIsCartOpen: (isOpen) => set({ isCartOpen: isOpen }),
+      setIsMobileMenuOpen: (isOpen) => set({ isMobileMenuOpen: isOpen }),
+      setAccentColor: (color) => set({ accentColor: color }),
+    }),
+    {
+      name: 'ui-storage',
+    }
+  )
+);

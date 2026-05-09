@@ -9,16 +9,16 @@ export default {
       colors: {
         // Brand colors
         gamertech: {
-          50: '#e6fff2',
-          100: '#b3ffd9',
-          200: '#80ffbf',
-          300: '#4dffa6',
-          400: '#1aff8c',
-          500: '#00ff88',
-          600: '#00cc6a',
-          700: '#00994f',
-          800: '#006635',
-          900: '#00331a',
+          50: 'rgba(var(--color-primary), 0.1)',
+          100: 'rgba(var(--color-primary), 0.2)',
+          200: 'rgba(var(--color-primary), 0.3)',
+          300: 'rgba(var(--color-primary), 0.4)',
+          400: 'rgba(var(--color-primary), 0.6)',
+          500: 'rgb(var(--color-primary))',
+          600: 'rgba(var(--color-primary), 0.8)',
+          700: 'rgba(var(--color-primary), 0.7)',
+          800: 'rgba(var(--color-primary), 0.5)',
+          900: 'rgba(var(--color-primary), 0.3)',
         },
         // Dark theme
         dark: {

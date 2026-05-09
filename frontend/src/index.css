@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-primary: 0, 255, 136; /* Default Neon Green */
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
