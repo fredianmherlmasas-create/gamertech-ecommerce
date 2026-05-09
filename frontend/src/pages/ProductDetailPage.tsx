@@ -10,7 +10,10 @@ import {
   ComputerDesktopIcon,
   Battery100Icon,
   ScaleIcon,
+  StarIcon,
+  UserCircleIcon
 } from '@heroicons/react/24/outline';
+import { StarIcon as StarIconSolid } from '@heroicons/react/24/solid';
 import { productService } from '../services/product.service';
 import { useCartStore } from '../hooks/useStore';
 import type { Product } from '../types';
@@ -18,6 +21,76 @@ import { cn } from '../utils/cn';
 import toast from 'react-hot-toast';
 
 export default function ProductDetailPage() {
+// ... existing state and logic ...
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {/* ... previous sections (Gallery, Info, Specs) ... */}
+
+      {/* Reviews Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="space-y-12"
+      >
+        <div className="flex items-center justify-between border-b border-dark-800 pb-8">
+          <div>
+            <h2 className="text-3xl font-bold text-white">Customer Reviews</h2>
+            <div className="flex items-center gap-2 mt-2">
+              <div className="flex text-gamertech-500">
+                {[...Array(5)].map((_, i) => <StarIconSolid key={i} className="w-5 h-5" />)}
+              </div>
+              <p className="text-gray-400 font-medium">4.8 out of 5 ({product.reviews?.length || 0} reviews)</p>
+            </div>
+          </div>
+          <button className="px-6 py-3 border border-dark-700 text-white font-bold rounded-xl hover:bg-dark-800 transition-colors">
+            Write a Review
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {product.reviews && product.reviews.length > 0 ? (
+            product.reviews.map((review, index) => (
+              <motion.div
+                key={review.id}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-dark-900 border border-dark-800 p-8 rounded-3xl"
+              >
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-dark-800 rounded-full flex items-center justify-center text-gray-500">
+                       <UserCircleIcon className="w-8 h-8" />
+                    </div>
+                    <div>
+                      <p className="text-white font-bold">{review.user?.firstName} {review.user?.lastName}</p>
+                      <p className="text-xs text-gray-500">{review.createdAt}</p>
+                    </div>
+                  </div>
+                  <div className="flex text-gamertech-500">
+                    {[...Array(5)].map((_, i) => (
+                      i < review.rating ? <StarIconSolid key={i} className="w-4 h-4" /> : <StarIcon key={i} className="w-4 h-4 text-gray-600" />
+                    ))}
+                  </div>
+                </div>
+                <p className="text-gray-400 leading-relaxed italic">"{review.comment}"</p>
+              </motion.div>
+            ))
+          ) : (
+            <div className="lg:col-span-2 text-center py-12 bg-dark-900 border border-dashed border-dark-800 rounded-3xl">
+              <p className="text-gray-500">No reviews yet. Be the first to review this laptop!</p>
+            </div>
+          )}
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
+// ... rest of component
   const { slug } = useParams<{ slug: string }>();
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(true);

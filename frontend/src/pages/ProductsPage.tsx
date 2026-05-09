@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FunnelIcon, Squares2X2Icon, ListBulletIcon } from '@heroicons/react/24/outline';
+import { FunnelIcon, Squares2X2Icon, ListBulletIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
 import { productService } from '../services/product.service';
+import { useCartStore } from '../hooks/useStore';
 import type { Product } from '../types';
 import { cn } from '../utils/cn';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const containerVariants = {
   hidden: { opacity: 0 },

@@ -45,6 +45,7 @@ export interface Product {
   };
   images: string[];
   badge?: string;
+  reviews?: Review[];
   isActive: boolean;
   isFeatured: boolean;
   categoryId: string;

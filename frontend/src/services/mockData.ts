@@ -54,7 +54,11 @@ export const mockProducts: Product[] = [
     category: mockCategories[0],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-    badge: 'Flagship'
+    badge: 'Flagship',
+    reviews: [
+      { id: 'r1', rating: 5, comment: 'Absolute beast of a machine! The mini-LED display is just incredible.', user: { firstName: 'Alex', lastName: 'G.' }, createdAt: '2024-05-01' },
+      { id: 'r2', rating: 4, comment: 'Performance is top-notch, but it gets quite warm during heavy gaming.', user: { firstName: 'Jordan', lastName: 'T.' }, createdAt: '2024-04-28' }
+    ]
   },
   {
     id: 'p2',
@@ -79,7 +83,10 @@ export const mockProducts: Product[] = [
     category: mockCategories[0],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-    badge: 'Best Seller'
+    badge: 'Best Seller',
+    reviews: [
+      { id: 'r3', rating: 5, comment: 'The best 14-inch laptop hands down. Perfect for travel.', user: { firstName: 'Sarah', lastName: 'K.' }, createdAt: '2024-05-05' }
+    ]
   },
   {
     id: 'p3',
