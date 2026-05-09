@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Production build
+dist/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Database
+*.sqlite
+*.sqlite3
+prisma/*.db
+prisma/migrations/migration_lock.toml
+
+# Testing
+coverage/
+
+# Misc
+.cache/
+tmp/
+temp/
