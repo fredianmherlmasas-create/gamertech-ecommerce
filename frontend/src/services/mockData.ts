@@ -54,6 +54,7 @@ export const mockProducts: Product[] = [
     category: mockCategories[0],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
+    badge: 'Flagship'
   },
   {
     id: 'p2',
@@ -78,6 +79,7 @@ export const mockProducts: Product[] = [
     category: mockCategories[0],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
+    badge: 'Best Seller'
   },
   {
     id: 'p3',
@@ -102,6 +104,7 @@ export const mockProducts: Product[] = [
     category: mockCategories[1],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
+    badge: 'Professional'
   },
   {
     id: 'p4',

@@ -183,12 +183,17 @@ function ProductCard({ product, viewMode }: { product: Product; viewMode: 'grid'
         to={`/products/${product.slug}`}
         className="group flex flex-col sm:flex-row bg-dark-800 rounded-xl overflow-hidden border border-dark-700 hover:border-gamertech-500/50 transition-all duration-300"
       >
-        <div className="sm:w-64 aspect-[4/3] overflow-hidden">
+        <div className="sm:w-64 aspect-[4/3] overflow-hidden relative">
           <img
             src={product.images[0] || '/placeholder-laptop.jpg'}
             alt={product.name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
+          {product.badge && (
+            <div className="absolute top-3 left-3 bg-gamertech-500 text-dark-950 text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded shadow-lg">
+              {product.badge}
+            </div>
+          )}
         </div>
         <div className="flex-1 p-6 flex flex-col justify-between">
           <div>

@@ -194,12 +194,17 @@ function ProductCard({ product }: { product: Product }) {
       to={`/products/${product.slug}`}
       className="group bg-dark-800 rounded-lg overflow-hidden border border-dark-700 hover:border-gamertech-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-gamertech-500/10"
     >
-      <div className="aspect-[4/3] overflow-hidden">
+      <div className="aspect-[4/3] overflow-hidden relative">
         <img
           src={product.images[0] || '/placeholder-laptop.jpg'}
           alt={product.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
+        {product.badge && (
+          <div className="absolute top-3 left-3 bg-gamertech-500 text-dark-950 text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded shadow-lg">
+            {product.badge}
+          </div>
+        )}
       </div>
       <div className="p-4">
         <p className="text-sm text-gamertech-500 font-medium">{product.brand}</p>

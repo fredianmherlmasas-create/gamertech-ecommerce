@@ -44,6 +44,7 @@ export interface Product {
     ports?: string[];
   };
   images: string[];
+  badge?: string;
   isActive: boolean;
   isFeatured: boolean;
   categoryId: string;
