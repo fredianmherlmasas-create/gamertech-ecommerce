@@ -1,5 +1,5 @@
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
-import { ShoppingCartIcon, UserIcon, Bars3Icon, XMarkIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { ShoppingCartIcon, UserIcon, Bars3Icon, XMarkIcon, MagnifyingGlassIcon, HeartIcon } from '@heroicons/react/24/outline';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore, useCartStore, useUIStore } from '../../hooks/useStore';
@@ -10,7 +10,7 @@ export default function MainLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, isAuthenticated, isAdmin, logout } = useAuthStore();
-  const { itemCount } = useCartStore();
+  const { itemCount, wishlist } = useCartStore();
   const { isMobileMenuOpen, setIsMobileMenuOpen } = useUIStore();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -85,6 +85,16 @@ export default function MainLayout() {
 
             {/* Right side actions */}
             <div className="flex items-center space-x-4">
+              {/* Wishlist */}
+              <Link to="/wishlist" className="relative p-2 text-gray-400 hover:text-gamertech-500 transition-colors hidden sm:block">
+                <HeartIcon className="w-6 h-6" />
+                {wishlist?.length > 0 && (
+                  <span className="absolute -top-0 -right-0 bg-red-500 text-white text-[8px] font-black rounded-full w-4 h-4 flex items-center justify-center">
+                    {wishlist.length}
+                  </span>
+                )}
+              </Link>
+
               {/* Cart */}
               <Link to="/cart" className="relative p-2 text-gray-300 hover:text-gamertech-500 transition-colors">
                 <ShoppingCartIcon className="w-6 h-6" />

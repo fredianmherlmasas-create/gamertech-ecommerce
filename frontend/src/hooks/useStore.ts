@@ -37,18 +37,22 @@ export const useAuthStore = create<AuthState>()(
 
 interface CartState {
   items: Array<{ product: Product; quantity: number }>;
+  wishlist: Product[];
   itemCount: number;
   totalAmount: number;
   addItem: (product: Product, quantity: number) => void;
   removeItem: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
+  toggleWishlist: (product: Product) => void;
+  isInWishlist: (productId: string) => boolean;
   clearCart: () => void;
 }
 
 export const useCartStore = create<CartState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       items: [],
+      wishlist: [],
       itemCount: 0,
       totalAmount: 0,
       addItem: (product, quantity) =>
@@ -81,6 +85,15 @@ export const useCartStore = create<CartState>()(
           const totalAmount = newItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
           return { items: newItems, itemCount, totalAmount };
         }),
+      toggleWishlist: (product) =>
+        set((state) => {
+          const isWishlisted = state.wishlist.some((p) => p.id === product.id);
+          const newWishlist = isWishlisted
+            ? state.wishlist.filter((p) => p.id !== product.id)
+            : [...state.wishlist, product];
+          return { wishlist: newWishlist };
+        }),
+      isInWishlist: (productId) => get().wishlist.some((p) => p.id === productId),
       clearCart: () => set({ items: [], itemCount: 0, totalAmount: 0 }),
     }),
     {
